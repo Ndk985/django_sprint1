@@ -3,8 +3,8 @@ from django.http import HttpRequest, HttpResponse
 
 
 # Create your views here.
-posts = {
-    0: {
+posts = [
+    {
         'id': 0,
         'location': 'Остров отчаянья',
         'date': '30 сентября 1659 года',
@@ -16,7 +16,7 @@ posts = {
                 полумёртвым на берег этого проклятого острова,
                 который назвал островом Отчаяния.''',
     },
-    1: {
+    {
         'id': 1,
         'location': 'Остров отчаянья',
         'date': '1 октября 1659 года',
@@ -32,7 +32,7 @@ posts = {
                 построить баркас, на котором и выбрались бы из этого
                 гиблого места.''',
     },
-    2: {
+    {
         'id': 2,
         'location': 'Остров отчаянья',
         'date': '25 октября 1659 года',
@@ -44,15 +44,18 @@ posts = {
                 Весь этот день я хлопотал  около вещей: укрывал и
                 укутывал их, чтобы не испортились от дождя.''',
     },
-}
+]
+
+
+posts_dict = {index: value for index, value in enumerate(posts)}
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return render(request, 'blog/index.html', {'posts': list(posts.values())})
+    return render(request, 'blog/index.html', {'posts': posts})
 
 
 def post_detail(request: HttpRequest, id: int) -> HttpResponse:
-    post = posts.get(id)
+    post = posts_dict.get(id)
     if post is None:
         raise Http404
     return render(request, 'blog/detail.html', {'post': post})
