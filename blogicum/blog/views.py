@@ -2,7 +2,7 @@ from django.shortcuts import render, Http404
 from django.http import HttpRequest, HttpResponse
 
 
-# Create your views here.
+# Если сделать список posts константой, то не проходят локальные тесты.
 posts = [
     {
         'id': 0,
@@ -47,7 +47,7 @@ posts = [
 ]
 
 
-posts_dict = {index: value for index, value in enumerate(posts)}
+POSTS_DICT = {post['id']: post for post in posts}
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -55,7 +55,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def post_detail(request: HttpRequest, id: int) -> HttpResponse:
-    post = posts_dict.get(id)
+    post = POSTS_DICT.get(id)
     if post is None:
         raise Http404
     return render(request, 'blog/detail.html', {'post': post})
